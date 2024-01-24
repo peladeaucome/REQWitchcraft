@@ -8,7 +8,7 @@ class Filter():
         self.b=np.array([1])
     
     def process(self, x):
-        x = scipy.lfilter(b=self.b, a=self.a, x=x)
+        x = scipy.signal.lfilter(b=self.b, a=self.a, x=x)
         return x
     
     def get_rfft(self, n):
