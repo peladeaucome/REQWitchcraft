@@ -53,5 +53,5 @@ class Parallel(Filter):
     def process(self, x):
         y = np.zeros_like(x)
         for filter in self.filters_list:
-            y = filter.process(x)
+            y+= filter.process(x)
         return y
