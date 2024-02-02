@@ -32,7 +32,7 @@ class EQFilter(Filter):
         self.f0=f0
         self.Q=Q
 
-        self.alpha, self.w0 = self.get_intermediateValues()
+        self.w0, self.alpha = self.get_intermediateValues()
         self.b, self.a = self.get_coeffs()
     
     def get_intermediateValues(self):
@@ -53,6 +53,41 @@ class AllPass(EQFilter):
              1 - self.alpha,
             -2*np.cos(self.w0),
              1 + self.alpha,
+        ])
+        a = np.array([
+             1 + self.alpha,
+            -2*np.cos(self.w0),
+             1 - self.alpha,
+        ])
+        return b, a
+
+class LowPass(EQFilter):
+    def __init__(self, f0, Q, sr):
+        super(LowPass, self).__init__(f0, Q, sr)
+    
+
+    def get_coeffs(self):
+        b = np.array([
+            (1 - np.cos(self.w0))/2,
+             1 - np.cos(self.w0),
+            (1 - np.cos(self.w0))/2,
+        ])
+        a = np.array([
+             1 + self.alpha,
+            -2*np.cos(self.w0),
+             1 - self.alpha,
+        ])
+        return b, a
+
+class HighPass(EQFilter):
+    def __init__(self, f0, Q, sr):
+        super(HighPass, self).__init__(f0, Q, sr)
+
+    def get_coeffs(self):
+        b = np.array([
+             (1 + np.cos(self.w0))/2,
+            -(1 + np.cos(self.w0)),
+             (1 + np.cos(self.w0))/2,
         ])
         a = np.array([
              1 + self.alpha,
